@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 
 import { BaseSeloEntity } from 'src/base.entity';
 import { OrderProduct } from 'src/orders/entities/order.entity';
@@ -26,6 +26,36 @@ export class Product extends BaseProduct {
   @OneToMany(() => OrderProduct, (details) => details.product)
   orderProduct: OrderProduct[];
 
+  @OneToMany(() => ProductVariant, (details) => details.product)
+  variants: ProductVariant[];
+
+  @OneToMany(() => ProductAdditional, (details) => details.product)
+  additional: ProductAdditional[];
+
   @OneToMany(() => Stock, (details) => details.product)
   stock: Stock[];
+}
+
+@Entity()
+export class ProductVariant extends BaseSeloEntity {
+  @Column()
+  name: string;
+
+  @Column()
+  price: number;
+
+  @ManyToOne(() => Product, (product) => product.variants)
+  product: Product;
+}
+
+@Entity()
+export class ProductAdditional extends BaseSeloEntity {
+  @Column()
+  name: string;
+
+  @Column()
+  price: number;
+
+  @ManyToOne(() => Product, (product) => product.additional)
+  product: Product;
 }

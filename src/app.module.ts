@@ -5,7 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
-import { Product } from './products/entities/product.entity';
+import {
+  Product,
+  ProductAdditional,
+  ProductVariant,
+} from './products/entities/product.entity';
 import {
   Order,
   OrderDetail,
@@ -29,6 +33,8 @@ import { Mutation } from './mutations/entities/mutation.entity';
       entities: [
         User,
         Product,
+        ProductVariant,
+        ProductAdditional,
         Order,
         OrderDetail,
         OrderProduct,
