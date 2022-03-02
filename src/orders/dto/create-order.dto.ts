@@ -32,3 +32,6 @@ export class CreateOrderDto {
 //     },
 //   ],
 // };
+
+// JSON Stringify
+// {"date":"2022-03-01T13:40:52.458Z","status":"DONE","code":"ECP0067","total":2000000,"discount":1000,"tableCode":"ABCD01","details":[{"subTotal":10000,"productId":1},{"subTotal":18000,"productId":2}]}

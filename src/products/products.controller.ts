@@ -25,12 +25,12 @@ export class ProductsController {
 
   @Get()
   async findAll(
-    @Res() res: Response,
-    @Query('_start') _start: number,
-    @Query('_end') _end: number,
-    @Query('_sort') _sort: string,
-    @Query('_order') _order: string,
-    @Query('q') q: string,
+    @Res() res?: Response,
+    @Query('_start') _start?: number,
+    @Query('_end') _end?: number,
+    @Query('_sort') _sort?: string,
+    @Query('_order') _order?: string,
+    @Query('q') q?: string,
   ) {
     const dataAll = await this.productsService.findAll(
       _start,

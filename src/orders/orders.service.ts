@@ -5,6 +5,8 @@ import { Order, OrderDetail, OrderProduct } from './entities/order.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Product } from 'src/products/entities/product.entity';
+import { StocksService } from 'src/stocks/stocks.service';
+import { MutationsService } from 'src/mutations/mutations.service';
 
 @Injectable()
 export class OrdersService {
@@ -19,6 +21,10 @@ export class OrdersService {
 
     @InjectRepository(Product)
     private productRepo: Repository<Product>,
+
+    private stockService: StocksService,
+
+    private mutationService: MutationsService,
   ) {}
 
   async getEntityCode(type: string): Promise<string> {
@@ -88,6 +94,19 @@ export class OrdersService {
       });
 
       totalAmountOrder += finalSubtotal;
+
+      const amountItem = 1;
+
+      // Update Stock
+      await this.stockService.updateStock(product, amountItem);
+
+      // Update Mutation
+      await this.mutationService.updateMutation(
+        'PENJUALAN',
+        amountItem,
+        10, //TODO change this with stock awal
+        product,
+      );
     }
 
     newOrder.total = totalAmountOrder;

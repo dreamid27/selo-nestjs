@@ -12,6 +12,10 @@ import {
   OrderProduct,
 } from './orders/entities/order.entity';
 import { OrdersModule } from './orders/orders.module';
+import { StocksModule } from './stocks/stocks.module';
+import { Stock } from './stocks/entities/stock.entity';
+import { MutationsModule } from './mutations/mutations.module';
+import { Mutation } from './mutations/entities/mutation.entity';
 
 @Module({
   imports: [
@@ -22,12 +26,22 @@ import { OrdersModule } from './orders/orders.module';
       username: 'postgres',
       password: 'admin',
       database: 'dbselo',
-      entities: [User, Product, Order, OrderDetail, OrderProduct],
+      entities: [
+        User,
+        Product,
+        Order,
+        OrderDetail,
+        OrderProduct,
+        Stock,
+        Mutation,
+      ],
       synchronize: true,
     }),
     ProductsModule,
     UsersModule,
     OrdersModule,
+    StocksModule,
+    MutationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
