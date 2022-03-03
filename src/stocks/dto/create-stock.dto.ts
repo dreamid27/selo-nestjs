@@ -1,5 +1,6 @@
 export class CreateStockDto {
   amount: number;
+  productVariantId: number;
   productId: number;
   warehouse: string;
 }
@@ -9,4 +10,7 @@ export class CreateStockDto {
 //   amount: 10,
 //   warehouse: 'UTAMA',
 //   productId: 2,
+//   productVariantId: 4,
 // };
+
+// {"amount":10,"warehouse":"UTAMA","productId":2,"productVariantId":3}

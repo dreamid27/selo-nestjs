@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Product } from 'src/products/entities/product.entity';
+import { Product, ProductVariant } from 'src/products/entities/product.entity';
 import { Repository } from 'typeorm';
 import { CreateStockDto } from './dto/create-stock.dto';
 import { UpdateStockDto } from './dto/update-stock.dto';
@@ -14,17 +14,37 @@ export class StocksService {
 
     @InjectRepository(Product)
     private productRepo: Repository<Product>,
+
+    @InjectRepository(ProductVariant)
+    private productVariantRepo: Repository<ProductVariant>,
   ) {}
 
   async create(createStockDto: CreateStockDto) {
     const product = await this.productRepo.findOne(createStockDto.productId);
 
-    return this.stockRepo.save({
-      ...createStockDto,
-      product: product,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    const stock = new Stock();
+    stock.product = product;
+    stock.amount = createStockDto.amount;
+    stock.warehouse = createStockDto.warehouse;
+    stock.createdAt = new Date();
+    stock.updatedAt = new Date();
+
+    console.log('helwo');
+    // Check apakah variant is exists
+    if (createStockDto.productVariantId) {
+      const productVariant = await this.productVariantRepo.findOne({
+        product: product,
+        id: createStockDto.productVariantId,
+      });
+
+      console.log(productVariant, 'product varian');
+
+      if (!productVariant) throw new Error("Variant doesn't exists");
+
+      stock.productVariant = productVariant;
+    }
+
+    return this.stockRepo.save(stock);
   }
 
   async findAll(

@@ -46,6 +46,9 @@ export class ProductVariant extends BaseSeloEntity {
 
   @ManyToOne(() => Product, (product) => product.variants)
   product: Product;
+
+  @OneToMany(() => Stock, (details) => details.productVariant)
+  stock: Stock[];
 }
 
 @Entity()
