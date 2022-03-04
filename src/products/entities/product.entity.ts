@@ -3,6 +3,7 @@ import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 import { BaseSeloEntity } from 'src/base.entity';
 import {
   OrderProduct,
+  OrderProductAdditional,
   OrderProductVariant,
 } from 'src/orders/entities/order.entity';
 import { Stock } from 'src/stocks/entities/stock.entity';
@@ -67,4 +68,7 @@ export class ProductAdditional extends BaseSeloEntity {
 
   @ManyToOne(() => Product, (product) => product.additional)
   product: Product;
+
+  @OneToMany(() => OrderProductAdditional, (addon) => addon.productAdditional)
+  orderProductAdditional: OrderProductAdditional[];
 }

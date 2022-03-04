@@ -6,9 +6,14 @@ import {
   Order,
   OrderDetail,
   OrderProduct,
+  OrderProductAdditional,
   OrderProductVariant,
 } from './entities/order.entity';
-import { Product, ProductVariant } from 'src/products/entities/product.entity';
+import {
+  Product,
+  ProductAdditional,
+  ProductVariant,
+} from 'src/products/entities/product.entity';
 import { StocksModule } from 'src/stocks/stocks.module';
 import { MutationsModule } from 'src/mutations/mutations.module';
 
@@ -22,8 +27,10 @@ import { MutationsModule } from 'src/mutations/mutations.module';
       OrderDetail,
       OrderProduct,
       OrderProductVariant,
+      OrderProductAdditional,
       Product,
       ProductVariant,
+      ProductAdditional,
     ]),
   ],
   controllers: [OrdersController],

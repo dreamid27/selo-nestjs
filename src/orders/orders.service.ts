@@ -5,11 +5,16 @@ import {
   Order,
   OrderDetail,
   OrderProduct,
+  OrderProductAdditional,
   OrderProductVariant,
 } from './entities/order.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Product, ProductVariant } from 'src/products/entities/product.entity';
+import {
+  Product,
+  ProductAdditional,
+  ProductVariant,
+} from 'src/products/entities/product.entity';
 import { StocksService } from 'src/stocks/stocks.service';
 import { MutationsService } from 'src/mutations/mutations.service';
 
@@ -27,11 +32,17 @@ export class OrdersService {
     @InjectRepository(OrderProductVariant)
     private orderProductVariantRepo: Repository<OrderProductVariant>,
 
+    @InjectRepository(OrderProductAdditional)
+    private orderProductAddonRepo: Repository<OrderProductAdditional>,
+
     @InjectRepository(Product)
     private productRepo: Repository<Product>,
 
     @InjectRepository(ProductVariant)
     private productVariantRepo: Repository<ProductVariant>,
+
+    @InjectRepository(ProductAdditional)
+    private productAdditionRepo: Repository<ProductAdditional>,
 
     private stockService: StocksService,
 
@@ -118,8 +129,34 @@ export class OrdersService {
       });
 
       totalAmountOrder += finalSubtotal;
-
       const amountItem = 1;
+
+      let totalPriceAddons = 0;
+
+      // Create Order Addon
+      for (const key in detail.addonIds) {
+        const addonId = detail.addonIds[key];
+
+        const addon = await this.productAdditionRepo.findOne(addonId);
+
+        const tempOrderProductAddon = new OrderProductAdditional();
+        tempOrderProductAddon.name = addon.name;
+        tempOrderProductAddon.price = addon.price;
+        tempOrderProductAddon.orderProduct = tempOrderProduct;
+        tempOrderProductAddon.productAdditional = addon;
+        tempOrderProductAddon.createdAt = new Date();
+        tempOrderProductAddon.updatedAt = new Date();
+        await this.orderProductAddonRepo.save(tempOrderProductAddon);
+
+        totalPriceAddons += addon.price;
+        //TODO calculate total amount order detail
+      }
+
+      // Update Total Price + Addons
+      tempOrderProduct.price += totalPriceAddons;
+
+      // Update Details
+      await this.orderProductRepo.save(tempOrderProduct);
 
       // Update Stock
       await this.stockService.updateStock(product, amountItem);
@@ -154,6 +191,14 @@ export class OrdersService {
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.details', 'orderDetails')
       .leftJoinAndSelect('orderDetails.orderProduct', 'orderProduct')
+      .leftJoinAndSelect(
+        'orderProduct.orderProductVariant',
+        'orderProductVariant',
+      )
+      .leftJoinAndSelect(
+        'orderProduct.orderProductAdditionals',
+        'orderProductAdditionals',
+      )
       .skip(_start)
       .limit(_limit)
       .getMany();

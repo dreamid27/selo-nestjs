@@ -1,4 +1,8 @@
-import { Product, ProductVariant } from 'src/products/entities/product.entity';
+import {
+  Product,
+  ProductAdditional,
+  ProductVariant,
+} from 'src/products/entities/product.entity';
 import {
   Entity,
   Column,
@@ -57,6 +61,27 @@ export class OrderProduct extends BaseSeloEntity {
   @OneToOne(() => OrderProductVariant, (variant) => variant.productVariant)
   @JoinColumn()
   orderProductVariant: OrderProductVariant;
+
+  @OneToMany(() => OrderProductAdditional, (addon) => addon.orderProduct)
+  orderProductAdditionals: OrderProductAdditional[];
+}
+
+@Entity()
+export class OrderProductAdditional extends BaseSeloEntity {
+  @Column()
+  name: string;
+
+  @Column()
+  price: number;
+
+  @ManyToOne(() => ProductAdditional, (pd) => pd.orderProductAdditional)
+  productAdditional: ProductAdditional;
+
+  @ManyToOne(
+    () => OrderProduct,
+    (orderProduct) => orderProduct.orderProductAdditionals,
+  )
+  orderProduct: OrderProduct;
 }
 
 @Entity()

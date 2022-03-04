@@ -2,6 +2,7 @@ export class CreateOrderDetailDto {
   subTotal: number;
   productId: number;
   variantId: number;
+  addonIds: number[];
 }
 
 export class CreateOrderDto {
@@ -27,11 +28,13 @@ const exampleObject = {
       subTotal: 10000,
       productId: 1,
       variantId: 2,
+      addonIds: [1, 2],
     },
     {
       subTotal: 18000,
       productId: 2,
       variantId: 3,
+      addonIds: [3, 1],
     },
   ],
 };
