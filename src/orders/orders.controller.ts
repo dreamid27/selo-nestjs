@@ -8,11 +8,16 @@ import {
   Delete,
   Query,
   Res,
+  HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import * as fs from 'fs';
+import { dirname, relative, basename } from 'path';
+
+import { create as PDFCreate, CreateOptions } from 'html-pdf';
 
 @Controller('orders')
 export class OrdersController {
@@ -59,5 +64,17 @@ export class OrdersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ordersService.remove(+id);
+  }
+
+  @Post('pdf')
+  async generatePDF(@Res() res: Response) {
+    const html = fs.readFileSync('./src/orders/template/index.html', 'utf8');
+
+    PDFCreate(html, {}).toFile('./test.pdf', function (err, resFile) {
+      if (err) return console.log(err);
+      console.log(resFile);
+
+      res.status(HttpStatus.OK).json(resFile);
+    });
   }
 }

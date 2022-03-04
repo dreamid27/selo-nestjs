@@ -22,9 +22,15 @@ import { StocksModule } from './stocks/stocks.module';
 import { Stock } from './stocks/entities/stock.entity';
 import { MutationsModule } from './mutations/mutations.module';
 import { Mutation } from './mutations/entities/mutation.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/public',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
