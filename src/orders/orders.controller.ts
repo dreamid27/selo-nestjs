@@ -15,7 +15,6 @@ import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import * as fs from 'fs';
-import { dirname, relative, basename } from 'path';
 
 import { create as PDFCreate, CreateOptions } from 'html-pdf';
 
