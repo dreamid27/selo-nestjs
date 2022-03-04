@@ -29,7 +29,6 @@ export class StocksService {
     stock.createdAt = new Date();
     stock.updatedAt = new Date();
 
-    console.log('helwo');
     // Check apakah variant is exists
     if (createStockDto.productVariantId) {
       const productVariant = await this.productVariantRepo.findOne({
@@ -37,8 +36,7 @@ export class StocksService {
         id: createStockDto.productVariantId,
       });
 
-      console.log(productVariant, 'product varian');
-
+      // TODO : Find best practice for handle bad request error
       if (!productVariant) throw new Error("Variant doesn't exists");
 
       stock.productVariant = productVariant;

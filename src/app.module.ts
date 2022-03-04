@@ -14,6 +14,7 @@ import {
   Order,
   OrderDetail,
   OrderProduct,
+  OrderProductVariant,
 } from './orders/entities/order.entity';
 import { OrdersModule } from './orders/orders.module';
 import { StocksModule } from './stocks/stocks.module';
@@ -38,6 +39,7 @@ import { Mutation } from './mutations/entities/mutation.entity';
         Order,
         OrderDetail,
         OrderProduct,
+        OrderProductVariant,
         Stock,
         Mutation,
       ],

@@ -1,7 +1,10 @@
 import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 
 import { BaseSeloEntity } from 'src/base.entity';
-import { OrderProduct } from 'src/orders/entities/order.entity';
+import {
+  OrderProduct,
+  OrderProductVariant,
+} from 'src/orders/entities/order.entity';
 import { Stock } from 'src/stocks/entities/stock.entity';
 
 /* Why we created like this ? the model will reuse in another module */
@@ -49,6 +52,9 @@ export class ProductVariant extends BaseSeloEntity {
 
   @OneToMany(() => Stock, (details) => details.productVariant)
   stock: Stock[];
+
+  @OneToMany(() => OrderProductVariant, (details) => details.productVariant)
+  orderProductVariant: OrderProductVariant[];
 }
 
 @Entity()

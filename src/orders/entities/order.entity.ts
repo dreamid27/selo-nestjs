@@ -1,4 +1,4 @@
-import { Product } from 'src/products/entities/product.entity';
+import { Product, ProductVariant } from 'src/products/entities/product.entity';
 import {
   Entity,
   Column,
@@ -29,6 +29,15 @@ export class Order extends BaseSeloEntity {
 }
 
 @Entity()
+export class OrderProductVariant extends BaseSeloEntity {
+  @Column()
+  name: string;
+
+  @ManyToOne(() => ProductVariant, (product) => product.orderProductVariant)
+  productVariant: ProductVariant;
+}
+
+@Entity()
 export class OrderProduct extends BaseSeloEntity {
   @Column()
   name: string;
@@ -44,6 +53,10 @@ export class OrderProduct extends BaseSeloEntity {
 
   @ManyToOne(() => Product, (product) => product.orderProduct)
   product: Product;
+
+  @OneToOne(() => OrderProductVariant, (variant) => variant.productVariant)
+  @JoinColumn()
+  orderProductVariant: OrderProductVariant;
 }
 
 @Entity()

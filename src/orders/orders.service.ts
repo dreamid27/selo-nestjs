@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Order, OrderDetail, OrderProduct } from './entities/order.entity';
+import {
+  Order,
+  OrderDetail,
+  OrderProduct,
+  OrderProductVariant,
+} from './entities/order.entity';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Product } from 'src/products/entities/product.entity';
+import { Product, ProductVariant } from 'src/products/entities/product.entity';
 import { StocksService } from 'src/stocks/stocks.service';
 import { MutationsService } from 'src/mutations/mutations.service';
 
@@ -19,8 +24,14 @@ export class OrdersService {
     @InjectRepository(OrderProduct)
     private orderProductRepo: Repository<OrderProduct>,
 
+    @InjectRepository(OrderProductVariant)
+    private orderProductVariantRepo: Repository<OrderProductVariant>,
+
     @InjectRepository(Product)
     private productRepo: Repository<Product>,
+
+    @InjectRepository(ProductVariant)
+    private productVariantRepo: Repository<ProductVariant>,
 
     private stockService: StocksService,
 
@@ -56,7 +67,7 @@ export class OrdersService {
     // TODO : Create Order Code Automatic
 
     let totalAmountOrder = 0;
-    const newOrder = await this.orderRepo.save(order);
+    await this.orderRepo.save(order);
 
     // Create Order Details
     for (const key in createOrderDto.details) {
@@ -65,20 +76,33 @@ export class OrdersService {
       // Find Product Id
       const product = await this.productRepo.findOne(detail.productId);
 
+      // Find Product Variant Id
+      // TODO : Find best practice for handle if variant not exists for the product
+      const variant = await this.productVariantRepo.findOne(detail.variantId);
+
+      // Create Order Product Variant
+      const tempOrderProductVariant = new OrderProductVariant();
+      tempOrderProductVariant.name = variant.name;
+      tempOrderProductVariant.productVariant = variant;
+      tempOrderProductVariant.createdAt = new Date();
+      tempOrderProductVariant.updatedAt = new Date();
+      await this.orderProductVariantRepo.save(tempOrderProductVariant);
+
       // Create Order product
       const tempOrderProduct = new OrderProduct();
       tempOrderProduct.description = product.description;
       tempOrderProduct.isActive = product.isActive;
       tempOrderProduct.name = product.name;
-      tempOrderProduct.price = product.price;
+      tempOrderProduct.price = variant.price || product.price;
       tempOrderProduct.product = product;
       tempOrderProduct.createdAt = new Date();
       tempOrderProduct.updatedAt = new Date();
+      tempOrderProduct.orderProductVariant = tempOrderProductVariant;
 
-      const orderProduct = await this.orderProductRepo.save(tempOrderProduct);
+      await this.orderProductRepo.save(tempOrderProduct);
 
       // Calculate Subtotal
-      const finalSubtotal = orderProduct.price;
+      const finalSubtotal = tempOrderProduct.price;
 
       // TODO - Calculate Discount - Insert Logic Discount/Promo Here
 
@@ -87,8 +111,8 @@ export class OrdersService {
         ...{
           subTotal: finalSubtotal,
         },
-        order: newOrder,
-        orderProduct: orderProduct,
+        order: order,
+        orderProduct: tempOrderProduct,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -109,8 +133,8 @@ export class OrdersService {
       );
     }
 
-    newOrder.total = totalAmountOrder;
-    const finalOrder = this.orderRepo.save(newOrder);
+    order.total = totalAmountOrder;
+    const finalOrder = this.orderRepo.save(order);
 
     return finalOrder;
   }

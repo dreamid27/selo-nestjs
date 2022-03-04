@@ -2,8 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersService } from './orders.service';
 import { OrdersController } from './orders.controller';
-import { Order, OrderDetail, OrderProduct } from './entities/order.entity';
-import { Product } from 'src/products/entities/product.entity';
+import {
+  Order,
+  OrderDetail,
+  OrderProduct,
+  OrderProductVariant,
+} from './entities/order.entity';
+import { Product, ProductVariant } from 'src/products/entities/product.entity';
 import { StocksModule } from 'src/stocks/stocks.module';
 import { MutationsModule } from 'src/mutations/mutations.module';
 
@@ -12,7 +17,14 @@ import { MutationsModule } from 'src/mutations/mutations.module';
     StocksModule,
     OrdersModule,
     MutationsModule,
-    TypeOrmModule.forFeature([Order, OrderDetail, OrderProduct, Product]),
+    TypeOrmModule.forFeature([
+      Order,
+      OrderDetail,
+      OrderProduct,
+      OrderProductVariant,
+      Product,
+      ProductVariant,
+    ]),
   ],
   controllers: [OrdersController],
   providers: [OrdersService],

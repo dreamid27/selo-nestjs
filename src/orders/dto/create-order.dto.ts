@@ -1,6 +1,7 @@
 export class CreateOrderDetailDto {
   subTotal: number;
   productId: number;
+  variantId: number;
 }
 
 export class CreateOrderDto {
@@ -14,24 +15,26 @@ export class CreateOrderDto {
 }
 
 // Example Object to be used in the test, using json stringify when using in the test
-// const exampleObject = {
-//   date: '2022-03-01T13:40:52.458Z',
-//   status: 'DONE',
-//   code: 'ECP0067',
-//   total: 2000000,
-//   discount: 1000,
-//   tableCode: 'ABCD01',
-//   details: [
-//     {
-//       subTotal: 10000,
-//       productId: 1,
-//     },
-//     {
-//       subTotal: 18000,
-//       productId: 2,
-//     },
-//   ],
-// };
+const exampleObject = {
+  date: '2022-03-01T13:40:52.458Z',
+  status: 'DONE',
+  code: 'ECP0067',
+  total: 2000000,
+  discount: 1000,
+  tableCode: 'ABCD01',
+  details: [
+    {
+      subTotal: 10000,
+      productId: 1,
+      variantId: 2,
+    },
+    {
+      subTotal: 18000,
+      productId: 2,
+      variantId: 3,
+    },
+  ],
+};
 
 // JSON Stringify
-// {"date":"2022-03-01T13:40:52.458Z","status":"DONE","code":"ECP0067","total":2000000,"discount":1000,"tableCode":"ABCD01","details":[{"subTotal":10000,"productId":1},{"subTotal":18000,"productId":2}]}
+// '{"date":"2022-03-01T13:40:52.458Z","status":"DONE","code":"ECP0067","total":2000000,"discount":1000,"tableCode":"ABCD01","details":[{"subTotal":10000,"productId":1,"variantId":2},{"subTotal":18000,"productId":2,"variantId":3}]}'
