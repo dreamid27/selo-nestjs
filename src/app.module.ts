@@ -24,6 +24,8 @@ import { MutationsModule } from './mutations/mutations.module';
 import { Mutation } from './mutations/entities/mutation.entity';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { TagsModule } from './tags/tags.module';
+import { Tag } from './tags/entities/tag.entity';
 
 @Module({
   imports: [
@@ -50,6 +52,7 @@ import { join } from 'path';
         OrderProductAdditional,
         Stock,
         Mutation,
+        Tag,
       ],
       synchronize: true,
     }),
@@ -58,6 +61,7 @@ import { join } from 'path';
     OrdersModule,
     StocksModule,
     MutationsModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
