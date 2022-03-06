@@ -26,6 +26,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { TagsModule } from './tags/tags.module';
 import { Tag } from './tags/entities/tag.entity';
+import { AlbumsModule } from './albums/albums.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { Tag } from './tags/entities/tag.entity';
     StocksModule,
     MutationsModule,
     TagsModule,
+    AlbumsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
