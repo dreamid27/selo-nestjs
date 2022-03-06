@@ -23,6 +23,9 @@ export class BaseProduct extends BaseSeloEntity {
 
   @Column()
   isActive: boolean;
+
+  @Column({ default: '' })
+  image: string;
 }
 
 @Entity()

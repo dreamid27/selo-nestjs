@@ -55,6 +55,9 @@ export class OrderProduct extends BaseSeloEntity {
   @Column()
   isActive: boolean;
 
+  @Column({ default: '' })
+  image: string;
+
   @ManyToOne(() => Product, (product) => product.orderProduct)
   product: Product;
 

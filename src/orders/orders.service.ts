@@ -104,6 +104,7 @@ export class OrdersService {
       tempOrderProduct.description = product.description;
       tempOrderProduct.isActive = product.isActive;
       tempOrderProduct.name = product.name;
+      tempOrderProduct.image = product.image;
       tempOrderProduct.price = variant.price || product.price;
       tempOrderProduct.product = product;
       tempOrderProduct.createdAt = new Date();

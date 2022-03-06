@@ -27,6 +27,7 @@ export class ProductsService {
     product.name = createProductDto.name;
     product.description = createProductDto.description;
     product.price = createProductDto.price;
+    product.image = createProductDto.image;
     product.createdAt = new Date();
     product.updatedAt = new Date();
 
