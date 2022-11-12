@@ -1,20 +1,59 @@
+import { ApiProperty } from '@nestjs/swagger';
 export class CreateProductVariantDto {
+  @ApiProperty()
   name: string;
+
+  @ApiProperty()
   price: number;
 }
 
 export class CreateProductAdditionalDto {
+  @ApiProperty()
   name: string;
+
+  @ApiProperty()
   price: number;
 }
 
 export class CreateProductDto {
+  @ApiProperty({
+    example: 'Kalung',
+  })
   name: string;
+
+  @ApiProperty({
+    example: 'Kalung berkarat 50 karat',
+  })
   description: string;
+
+  @ApiProperty({
+    example: 10000,
+  })
   price: number;
+
+  @ApiProperty({
+    example: true,
+  })
   isActive: boolean;
+
+  @ApiProperty({
+    example:
+      'https://http://localhost:4000/public/albums/screen_shot_2022_03_05_at_20_07_27-1646577127278.png',
+  })
   image: string;
+
+  @ApiProperty({
+    isArray: true,
+    type: CreateProductVariantDto,
+    example: [{ name: 'Kalung', price: 10000 }],
+  })
   variants: CreateProductVariantDto[];
+
+  @ApiProperty({
+    isArray: true,
+    type: CreateProductAdditionalDto,
+    example: [{ name: 'Bross', price: 10000 }],
+  })
   additionals: CreateProductAdditionalDto[];
 }
 

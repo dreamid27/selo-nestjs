@@ -36,11 +36,11 @@ import { AlbumsModule } from './albums/albums.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'db.mbmrpbolsghkbcdcgjvj.supabase.co',
       port: 5432,
       username: 'postgres',
-      password: 'admin',
-      database: 'dbselo',
+      password: '6I3ALY0i2cLpJMqV',
+      database: 'postgres',
       entities: [
         User,
         Product,

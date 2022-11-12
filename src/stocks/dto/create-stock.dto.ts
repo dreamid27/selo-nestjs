@@ -1,7 +1,23 @@
+import { ApiProperty } from '@nestjs/swagger';
 export class CreateStockDto {
+  @ApiProperty({
+    example: 10,
+  })
   amount: number;
+
+  @ApiProperty({
+    example: 4,
+  })
   productVariantId: number;
+
+  @ApiProperty({
+    example: 2,
+  })
   productId: number;
+
+  @ApiProperty({
+    example: 'UTAMA',
+  })
   warehouse: string;
 }
 
